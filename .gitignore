@@ -1,0 +1,4 @@
+.venv
+
+# Игнорировать файлы настроек Finder на macOS
+.DS_Store
