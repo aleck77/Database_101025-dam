@@ -112,3 +112,5 @@ FROM employees;
 SELECT notes 
 , COALESCE(notes, 'Not filled') as not_fill
 FROM employees;
+
+Delete from Employees Where EmployeeID = 1;
