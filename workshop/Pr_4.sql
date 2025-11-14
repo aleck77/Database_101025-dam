@@ -61,3 +61,6 @@ price DECIMAL(8, 2) CHECK (price >= 0),
 stock_quantity INT NOT NULL,
 supplier_id INT
 );
+
+RENAME table table_old TO table_new;
+rename table Sales TO ProductSales;
