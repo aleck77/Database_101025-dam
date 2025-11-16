@@ -127,3 +127,20 @@ VALUES
 ('Charlie', 'Johnson', '1988-02-10', 52000.00, 'charlie.johnson@example.com'),
 ('Diana', 'Williams', '1992-11-01', 58000.00, 'diana.williams@example.com'),
 ('Edward', 'Brown', '1987-09-30', 61000.00, 'edward.brown@example.com');
+
+CREATE OR REPLACE VIEW 101025_DAM_OO.Weather_Berlin_Summary AS
+SELECT 
+    -- 1. Стовпці вихідної таблиці в потрібному порядку:
+    Id,
+    RecordDate,
+    DayTemp,
+    NightTemp,
+    WindSpeed,
+    -- 2. Обчислювані стовпці в потрібному порядку:
+    (DayTemp + NightTemp) / 2 AS AverageTemp, -- Середня суточна температура (Виправлено дужки!)
+    CASE
+        WHEN WindSpeed < 2 THEN 'штиль'
+        WHEN WindSpeed <= 5 THEN 'умеренный ветер'
+        ELSE 'сильный ветер'
+    END AS WindClas
+FROM 101025_DAM_OO.Weather_Berlin;
