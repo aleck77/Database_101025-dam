@@ -12,9 +12,8 @@ where product_code like "%9_"
 */
 SELECT unit_price * quantity * (1 - discount) AS sum_total,  product_id
 FROM order_details
-WHERE unit_price * quantity * (1 - discount) > (SELECT AVG(unit_price * quantity * (1 - discount)) FROM order_details)
-;
-            
+WHERE unit_price * quantity * (1 - discount) > (SELECT AVG(unit_price * quantity * (1 - discount)) FROM order_details);
+
 -- Найти имена и фамилии сотрудников с максимальной зарплатой HR.EMPLOYEES:
 SELECT max(salary) 
 FROM employees;
@@ -47,18 +46,15 @@ GROUP BY 1;
 SELECT avg(salary)
 FROM employees;
 
-select department_id, avg(salary)
+SELECT department_id, AVG(salary)
 FROM employees
-group by department_id
-having avg(salary) > 8000;
-
-SELECT 
-    department_id, AVG(salary)
-FROM
-    employees
 GROUP BY department_id
-HAVING AVG(salary) > 8000
-;
+HAVING AVG(salary) > 8000;
+
+SELECT department_id, AVG(salary)
+FROM employees
+GROUP BY department_id
+HAVING AVG(salary) > 8000;
 
 -- Найти количество сотрудников из департамента с айди 100, которые зарабатывают более 5000.
 SELECT count(employee_id)
@@ -76,4 +72,3 @@ WHERE salary > (SELECT AVG(salary) FROM employees) AND department_id = 60;
 SELECT COUNT(employee_id)
 FROM employees
 WHERE salary > (SELECT AVG(salary) FROM employees) AND department_id = 60;
-

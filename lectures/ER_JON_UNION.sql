@@ -1,5 +1,4 @@
 -- UNION
-
 SELECT * FROM northwind.employees;
 
 SELECT * FROM northwind.customers
@@ -24,17 +23,15 @@ customers;
 SELECT customer_id, COUNT(*), 'ord' FROM orders GROUP BY customer_id
 UNION
 SELECT id, COUNT(*) , 'prod' FROM products GROUP BY id;
-
 /*
 Выведите в одну общую выборку из таблиц customers и employees имена и фамилии клиентов и сотрудников.
 */
 select first_name, last_name, 'customers' from customers
 union all
 select first_name, last_name, 'employees' from employees;
-
 -- JOIN
-
-SELECT * FROM hr.employees emp 
+SELECT * 
+FROM hr.employees emp 
 LEFT JOIN hr.employees man ON emp.manager_id = man.employee_id;
 
 SELECT *
