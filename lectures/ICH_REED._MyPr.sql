@@ -267,14 +267,14 @@ JOIN products pr ON pr.id = total_qua.product_id;
 -- ищем id для Lee
 SELECT id
 FROM customers
-WHERE last_name IN ('Lee')
+WHERE last_name IN ('Lee');
 
 -- первая дата заказа Lee
 SELECT MIN(order_date)
 FROM orders
 WHERE customer_id IN (SELECT id
 FROM customers
-WHERE last_name IN ('Lee'))
+WHERE last_name IN ('Lee'));
 
 -- финальный запрос с 2 подзапросами
 SELECT *
@@ -283,7 +283,7 @@ WHERE order_date > (SELECT MIN(order_date)
 FROM orders
 WHERE customer_id IN (SELECT id
 FROM customers
-WHERE last_name IN ('Lee')))
+WHERE last_name IN ('Lee')));
 
 -- cte 
 WITH afte_lee AS
@@ -294,19 +294,19 @@ WITH afte_lee AS
 )
 SELECT *
 FROM orders
-WHERE order_date > (SELECT * FROM afte_lee)
+WHERE order_date > (SELECT * FROM afte_lee);
 
 /* 3. Найти все продукты таблицы  products c максимальным target_level*/
 
 -- находим значение текущего максимального target_level
 SELECT MAX(target_level)
-FROM products
+FROM products;
 
 -- финальный запрос с подзапросом
 SELECT product_name, target_level
 FROM products
 WHERE target_level = (SELECT MAX(target_level)
-FROM products)
+FROM products);
 
 -- cte
 WITH mtl AS
@@ -316,4 +316,81 @@ WITH mtl AS
 )
 SELECT product_name, target_level
 FROM products
-WHERE target_level = (SELECT MAX(target_level) FROM products)
+WHERE target_level = (SELECT MAX(target_level) FROM products);
+
+/*Выберите только тех сотрудников из таблицы employees,  имя которых содержит английскую 
+букву 'e' или их job_title = Sales Representative. 
+Из заказов orders выберите заказы в которых город отправки ship_city = Las Vegas. 
+Проверьте, отправляли ли найденные сотрудники заказы в Las Vegas. 
+Решите задачу с помощью подзапросов и cte.*/
+
+SELECT  *
+FROM employees
+WHERE first_name LIKE "%e%" OR job_title = "Sales Representative";
+
+SELECT  *
+FROM orders
+WHERE ship_city = "Las Vegas";
+
+SELECT  *
+FROM employees
+WHERE (first_name LIKE "%e%" OR job_title = "Sales Representative")
+AND id IN ( SELECT employee_id FROM orders WHERE ship_city = "Las Vegas");
+
+SELECT  *
+FROM orders
+WHERE ship_city = "Las Vegas"
+AND employee_id IN ( SELECT id FROM employees WHERE first_name LIKE "%e%" OR job_title = "Sales Representative");
+
+WITH emp_like AS
+(
+	SELECT  *
+	FROM employees
+	WHERE first_name LIKE "%e%" OR job_title = "Sales Representative" 
+)
+SELECT  *
+FROM orders ord
+JOIN emp_like el
+ON ord.employee_id = el.id
+WHERE ship_city = "Las Vegas";
+
+WITH ord_lv AS
+(
+	SELECT  *
+	FROM orders
+	WHERE ship_city = "Las Vegas" 
+)
+SELECT  *
+FROM employees el
+RIGHT JOIN ord_lv
+ON el.id = ord_lv.employee_id
+WHERE first_name LIKE "%e%" OR job_title = "Sales Representative";
+
+WITH ord_lv AS
+(
+	SELECT  *
+	FROM orders
+	WHERE ship_city = "Las Vegas" 
+)
+SELECT  *
+FROM employees
+WHERE (first_name LIKE "%e%" OR job_title = "Sales Representative")
+AND id IN ( SELECT employee_id FROM ord_lv);
+
+WITH emp_like AS
+( 
+SELECT *
+FROM employees
+WHERE first_name LIKE "%e%" OR job_title = "Sales Representative"
+)
+SELECT *
+FROM orders
+WHERE ship_city = "Las Vegas" AND employee_id IN (SELECT id FROM emp_like);
+
+USE hr;
+SELECT *
+FROM jobs;
+
+USE airport;
+SELECT *
+FROM airliners;

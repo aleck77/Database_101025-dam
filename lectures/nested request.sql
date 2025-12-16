@@ -388,6 +388,7 @@ WHERE salary < (
 SELECT  AVG(salary)
 FROM employees);
 -- Найти имена и фамилии сотрудников с максимальной зарплатой в каждом департаменте HR.EMPLOYEES
+USE hr;
 SELECT  department_id
        ,MAX(salary) AS ms
 FROM employees
