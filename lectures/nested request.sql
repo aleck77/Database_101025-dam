@@ -304,36 +304,37 @@ JOIN orders ord
 ON tc.id = ord.customer_id AND shipper_id = 3 AND tc.company IN ('Company A', 'Company B', 'Company C', 'Company D', 'Company F')
 JOIN shippers ship
 ON ship.id = ord.shipper_id;
-
-SELECT  tc.id
-       ,tc.first_name
-       ,tc.last_name
-FROM customers tc
-WHERE tc.company IN ('Company A', 'Company B', 'Company C', 'Company D', 'Company F');
-
-SELECT  ord.customer_id
+-- подзапросы
+-- 1
+SELECT  id
+       ,first_name
+       ,last_name
+FROM customers
+WHERE company IN ('Company A', 'Company B', 'Company C', 'Company D', 'Company F');
+--2 
+SELECT  customer_id
        ,shipper_id
-FROM orders ord
+FROM orders
 WHERE shipper_id = 3;
-
+-- финальный запрос с подзапросом во FROM и JOIN
 SELECT  tc.id
        ,tc.first_name
        ,tc.last_name
-       ,tc.company
+       ,ship.company
 FROM
 (
 	SELECT  customer_id
 	       ,shipper_id
-	FROM orders ord
+	FROM orders
 	WHERE shipper_id = 3
 ) AS ord
 JOIN
 (
-	SELECT  tc.id
-	       ,tc.first_name
-	       ,tc.last_name
-	FROM customers tc
-	WHERE tc.company IN ('Company A', 'Company B', 'Company C', 'Company D', 'Company F') 
+	SELECT  id
+	       ,first_name
+	       ,last_name
+	FROM customers
+	WHERE company IN ('Company A', 'Company B', 'Company C', 'Company D', 'Company F') 
 ) AS tc
 ON tc.id = ord.customer_id
 JOIN shippers ship
