@@ -43,12 +43,12 @@ ON pr.id = total_qua.product_id;
 -- ищем id для Lee
 SELECT  id
 FROM customers
-WHERE last_name IN ('Lee');
+WHERE last_name = 'Lee';
 
 -- первая дата заказа Lee
 SELECT  MIN(order_date)
 FROM orders
-WHERE customer_id IN ( SELECT id FROM customers WHERE last_name IN ('Lee'));
+WHERE customer_id IN ( SELECT id FROM customers WHERE last_name = 'Lee' );
 
 -- финальный запрос с 2 подзапросами
 SELECT  *
@@ -56,7 +56,7 @@ FROM orders
 WHERE order_date > (
 SELECT  MIN(order_date)
 FROM orders
-WHERE customer_id IN ( SELECT id FROM customers WHERE last_name IN ('Lee')));
+WHERE customer_id IN ( SELECT id FROM customers WHERE last_name = 'Lee'));
 
 -- cte 
 WITH afte_lee AS
