@@ -18,19 +18,14 @@ FROM purchase_order_details;
 /*3. Посчитайте стоимость продукта в заказе как quantity*unit_cost. 
 Выведите суммарную стоимость продуктов с помощью оконной функции. 
 Сделайте то же самое с помощью GROUP BY*/
-SELECT  purchase_order_id
-       ,product_id
-       ,quantity * unit_cost                                                      AS line_cost
-       ,SUM(quantity * unit_cost) OVER(PARTITION BY purchase_order_id, product_id) AS prod_cost_ord
+SELECT  DISTINCT product_id
+       ,SUM(quantity * unit_cost) OVER(PARTITION BY product_id) AS prod_cost_ord
 FROM purchase_order_details;
 
-SELECT  purchase_order_id
-       ,product_id
-       ,quantity * unit_cost      AS line_cost
+SELECT  product_id
        ,SUM(quantity * unit_cost) AS prod_cost_ord
 FROM purchase_order_details
-GROUP BY  1
-         ,2;
+GROUP BY  1;
 
 /*4. Посчитайте количество заказов по дате получения и posted_to_inventory. 
 Если оно превышает 1 то выведите '>1' в противном случае '=1'.
