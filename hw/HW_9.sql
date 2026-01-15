@@ -38,5 +38,5 @@ SELECT
         THEN '>1'
         ELSE '=1'
     END AS order_count_flag
-FROM purchase_order_details;
-
+FROM purchase_order_details
+WHERE date_received IS NOT NULL;
