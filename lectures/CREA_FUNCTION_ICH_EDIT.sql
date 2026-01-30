@@ -16,6 +16,7 @@ SELECT to_upper_case(name)
 FROM students;
 
 SHOW CREATE FUNCTION to_upper_case;
+DROP FUNCTION IF EXISTS -- hypotenuse
 
 SELECT ROUTINE_NAME, ROUTINE_TYPE, ROUTINE_DEFINITION
 FROM INFORMATION_SCHEMA.ROUTINES
@@ -133,7 +134,9 @@ set Salary = Salary / 2
 -- 15% для зарплаты от 60000 до 80000
 -- 18% для зарплаты свыше 80000
 
-CREATE FUNCTION cget_tax(salary DECIMAL(10,2))
+
+
+CREATE FUNCTION get_tax(salary DECIMAL(10,2))
 RETURNS DECIMAL(10,2)
 DETERMINISTIC
 BEGIN
@@ -146,5 +149,5 @@ BEGIN
     ;
 END;
 
-SELECT FirstName, LastName, Salary, cget_tax(Salary) AS Tax_volume, (Salary - cget_tax(Salary)) AS Netto_salary
+SELECT FirstName, LastName, Salary, get_tax(Salary) AS Tax_volume, (Salary - get_tax(Salary)) AS Netto_salary
 FROM Employees;
