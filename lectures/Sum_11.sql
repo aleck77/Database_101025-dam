@@ -70,6 +70,27 @@ BEGIN
 		END;
 END$$
 
+-- Создайте функцию get_tax(salary), которая возвращает объем налоговой ставки:
+-- 13% для зарплаты до 60000
+-- 15% для зарплаты от 60000 до 80000
+-- 18% для зарплаты свыше 80000
+
+CREATE FUNCTION get_tax(salary DECIMAL(10,2))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    RETURN 
+        CASE
+            WHEN salary > 80000 THEN Salary * 0.18
+            WHEN salary >= 60000 THEN Salary * 0.15
+            ELSE Salary * 0.13
+        END
+    ;
+END;
+
+SELECT FirstName, LastName, Salary, get_tax(Salary) AS Tax_volume, (Salary - get_tax(Salary)) AS Netto_salary
+FROM Employees;
+
 -- Задача для факультативныой работы
 
 -- Создайте функцию calculate_bonus(salary, hire_date), которая рассчитывает годовой бонус:
@@ -77,3 +98,29 @@ END$$
 -- 10% от зарплаты для стажа от 2 до 5 лет
 -- 15% от зарплаты для стажа свыше 5 лет
 -- Рассчитать финальную зарплату.
+
+SELECT  FirstName
+       ,LastName
+       ,Salary
+       ,hiredate
+       ,TIMESTAMPDIFF(YEAR,hiredate,CURDATE()) AS experience
+       ,CASE WHEN TIMESTAMPDIFF(YEAR,hiredate,CURDATE()) < 2 THEN salary * 0.05
+             WHEN TIMESTAMPDIFF(YEAR,hiredate,CURDATE()) < 5 THEN salary * 0.1  ELSE salary * 0.15 END AS bonus_volume
+FROM 101025dam_Svit.Employees;
+
+CREATE FUNCTION calculate_bonus(salary DECIMAL(10,2), HireDate DATE) 
+RETURNS decimal(10,2)
+DETERMINISTIC
+BEGIN
+		DECLARE experience INT;
+		SET experience = TIMESTAMPDIFF(YEAR, hiredate, CURDATE());
+		RETURN CASE 
+			WHEN experience < 2 THEN salary * 0.05
+			WHEN experience < 5 THEN salary * 0.1
+			ELSE salary * 0.15
+			END;
+END
+
+-- 101025dam_rNatalia  101025dam_Svit
+SELECT FirstName, LastName, hiredate,TIMESTAMPDIFF(YEAR,hiredate,CURDATE()) AS experience, Salary, calculate_bonus(Salary, HireDate) AS bonus_volume, (Salary + calculate_bonus(Salary, HireDate)) AS bonus_salary
+FROM 101025dam_Svit.Employees;
