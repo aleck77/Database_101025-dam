@@ -1,40 +1,4 @@
--- Создайте функцию для перевода текста в верхний регистр. 
--- Функция принимает строку и возвращает её в верхнем регистре.
-
-DELIMITER //
-
-CREATE FUNCTION to_upper_case (INPUT VARCHAR(100))
-RETURNS VARCHAR(100)
-DETERMINISTIC
-BEGIN
-    RETURN UPPER(INPUT);
-END;
-
-// DELIMITER;
-
-SELECT to_upper_case(name)
-FROM students;
-
-SHOW CREATE FUNCTION to_upper_case;
-DROP FUNCTION IF EXISTS -- hypotenuse
-
-SELECT ROUTINE_NAME, ROUTINE_TYPE, ROUTINE_DEFINITION
-FROM INFORMATION_SCHEMA.ROUTINES
-WHERE ROUTINE_SCHEMA = DATABASE()
-AND ROUTINE_TYPE = 'FUNCTION';
-
-/*Функция для проверки, является ли число четным. 
-Функция принимает целое число и возвращает 1,
-если оно четное, и 0, если нечетное.*/
-
-CREATE FUNCTION is_even (NUM INT)
-RETURNS BOOLEAN
-DETERMINISTIC
-BEGIN
-    RETURN number % 2 = 0;
-END;
-
---Практика
+--Практика 11
 
 /*1. Перевод сантиметров в дюймы
 Создайте функцию для перевода сантиметров в дюймы.

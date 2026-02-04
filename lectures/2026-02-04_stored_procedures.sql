@@ -65,9 +65,9 @@ ELSE SET is_more = 0;
 END IF;
 END;
 
-CALL more_salary (15,@result);
+CALL more_salary (15,@result); -- id15
+CALL more_salary (2,@result);  -- id 2
 SELECT @result;
-CALL more_salary (2,@result);
 
 -- Пример Катерина К
 DROP PROCEDURE more_then_avgsalary
