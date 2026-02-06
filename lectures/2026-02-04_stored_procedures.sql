@@ -244,18 +244,17 @@ BEGIN
     WHERE customer_id = c_id);
 IF is_exist = 0 THEN SET message  = 'клиента не существует';
 ELSE
-CASE
-    WHEN 
-
-    END;
+    UPDATE customers 
+    SET client_status = 
+    CASE
+        WHEN total_spent >= 5000 THEN 'Premium'
+        WHEN total_spent >= 1000 THEN 'VIP'
+        ELSE 'Regular'
+    END
+    WHERE customer_id = c_id;
+    SET message = 'Статус изменен';
+END IF;
 END;
 
-
-DELIMITER //
-CREATE PROCEDURE new_status (IN c_id INT, OUT massage VARCHAR(100))
-BEGIN
-DECLARE is_exist INT;
-	SET is_exist = (SELECT COUNT(customer_id) FROM  customers
-	WHERE customer_id = c_id);
-IF is_exist = 0 THEN SET massage = 'Такой клиент отсутсвует';
-ELSE
+CALL new_status(26, @message);
+SELECT @message;
